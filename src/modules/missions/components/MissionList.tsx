@@ -20,6 +20,7 @@ import {
   MISSION_STATUS_LABEL,
 } from "../status";
 import type { MissionStatus } from "../types";
+import { MissionOverview } from "./MissionOverview";
 import { MissionStatusBadge } from "./MissionStatusBadge";
 
 export function DispatchMissionList(): ReactNode {
@@ -35,7 +36,7 @@ export function DispatchMissionList(): ReactNode {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Missions"
+        title="Vos opérations, en un regard."
         description="Organisez les livraisons et suivez leur progression."
         actions={
           <Button asChild>
@@ -46,6 +47,9 @@ export function DispatchMissionList(): ReactNode {
           </Button>
         }
       />
+      {!query.loading && !query.error && query.data && (
+        <MissionOverview missions={query.data} />
+      )}
       <section
         aria-label="Filtres des missions"
         className="panel grid gap-4 md:grid-cols-3"
@@ -115,7 +119,7 @@ export function DispatchMissionList(): ReactNode {
           />
         ) : (
           <>
-            <div className="hidden rounded-xl border bg-card md:block">
+            <div className="hidden overflow-hidden rounded-2xl border bg-card md:block">
               <table className="w-full table-fixed text-left text-sm">
                 <thead className="border-b bg-muted text-muted-foreground">
                   <tr>
@@ -139,12 +143,12 @@ export function DispatchMissionList(): ReactNode {
                     >
                       <td className="break-words p-4">
                         <Link
-                          className="inline-flex min-h-12 items-center font-semibold text-primary underline-offset-4 hover:underline"
+                          className="inline-flex min-h-12 items-center text-xs font-semibold tracking-wide text-primary underline-offset-4 hover:underline"
                           href={`/dispatch/missions/${m.id}`}
                         >
                           {m.reference}
                         </Link>
-                        <p>{m.customerName}</p>
+                        <p className="font-medium">{m.customerName}</p>
                       </td>
                       <td className="break-words p-4">{m.deliveryAddress}</td>
                       <td className="break-words p-4">{m.driver.fullName}</td>
@@ -167,7 +171,7 @@ export function DispatchMissionList(): ReactNode {
                     <strong>{m.reference}</strong>
                     <MissionStatusBadge status={m.status} />
                   </div>
-                  <p>{m.customerName}</p>
+                  <p className="font-medium">{m.customerName}</p>
                   <p className="text-sm text-muted-foreground">
                     {m.deliveryAddress}
                   </p>
@@ -185,11 +189,14 @@ export function DispatchMissionList(): ReactNode {
 export function DriverMissionList(): ReactNode {
   const query = useMissions();
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
         title="Ma tournée"
         description="Vos missions du jour, une étape à la fois."
       />
+      {!query.loading && !query.error && query.data && (
+        <MissionOverview missions={query.data} driver />
+      )}
       <Button variant="outline" onClick={query.reload} disabled={query.loading}>
         <RefreshCw aria-hidden />
         Actualiser
@@ -207,12 +214,19 @@ export function DriverMissionList(): ReactNode {
         ) : (
           <div className="grid gap-4">
             {query.data.map((m) => (
-              <article className="panel space-y-4 break-words" key={m.id}>
+              <article
+                className="panel space-y-5 break-words border-l-4 border-l-primary"
+                key={m.id}
+              >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-sm font-medium">{m.reference}</span>
+                  <span className="text-xs font-semibold tracking-wide text-muted-foreground">
+                    {m.reference}
+                  </span>
                   <MissionStatusBadge status={m.status} />
                 </div>
-                <h2 className="text-xl font-semibold">{m.customerName}</h2>
+                <h2 className="text-xl font-semibold tracking-tight">
+                  {m.customerName}
+                </h2>
                 <p className="flex items-start gap-2">
                   <MapPin
                     className="mt-1 size-5 shrink-0 text-primary"
@@ -222,7 +236,7 @@ export function DriverMissionList(): ReactNode {
                 </p>
                 <Button
                   asChild
-                  className="w-full"
+                  className="w-full justify-between"
                   variant={
                     DRIVER_ACTIONS[m.status].length ? "default" : "outline"
                   }

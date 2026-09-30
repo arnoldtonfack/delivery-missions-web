@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { DispatchNav } from "@/components/DispatchNav";
 import type { ReactNode } from "react";
 
 import { AppHeader } from "@/components/AppHeader";
@@ -11,16 +11,12 @@ export default function DispatchLayout({
   return (
     <RoleGuard role="DISPATCHER">
       <AppHeader />
-      <nav
-        aria-label="Navigation dispatcher"
-        className="flex gap-6 border-b bg-card px-4 font-medium md:px-8 [&_a]:flex [&_a]:min-h-12 [&_a]:items-center [&_a]:text-primary"
-      >
-        <Link href="/dispatch">Missions</Link>
-        <Link href="/dispatch/drivers">Chauffeurs</Link>
-      </nav>
-      <main className="mx-auto w-full min-w-0 max-w-7xl flex-1 p-4 md:p-8">
-        {children}
-      </main>
+      <div className="grid flex-1 lg:grid-cols-[232px_minmax(0,1fr)]">
+        <DispatchNav />
+        <main className="mx-auto w-full min-w-0 max-w-[1440px] p-4 py-6 md:p-8 xl:p-10">
+          {children}
+        </main>
+      </div>
     </RoleGuard>
   );
 }

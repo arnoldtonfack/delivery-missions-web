@@ -116,7 +116,7 @@ export function MissionDetailView({
             />
             <section
               aria-label="Trajet"
-              className="panel space-y-6 break-words"
+              className="panel space-y-6 break-words border-t-4 border-t-primary"
             >
               <div className="flex gap-3">
                 <Warehouse
@@ -177,9 +177,12 @@ export function MissionDetailView({
                   Aucun événement enregistré.
                 </p>
               ) : (
-                <ol className="space-y-5 border-l-2 pl-4">
+                <ol className="space-y-6 border-l-2 border-primary/20 pl-5">
                   {mission.statusHistory.map((entry) => (
-                    <li key={entry.id} className="space-y-1 break-words">
+                    <li
+                      key={entry.id}
+                      className="relative space-y-1 break-words before:absolute before:top-1.5 before:-left-[27px] before:size-3 before:rounded-full before:border-2 before:border-card before:bg-primary"
+                    >
                       <p className="font-medium">
                         {entry.fromStatus
                           ? `${MISSION_STATUS_LABEL[entry.fromStatus]} → `

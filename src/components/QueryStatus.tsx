@@ -1,3 +1,4 @@
+import { CircleAlert, LoaderCircle } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,8 @@ export function QueryStatus({
 }: QueryStatusProps): ReactNode {
   if (error) {
     return (
-      <div role="alert" className="flex flex-col items-start gap-2">
+      <div role="alert" className="panel flex flex-col items-start gap-4">
+        <CircleAlert className="size-6 text-destructive" aria-hidden />
         <p>{error}</p>
         <Button variant="outline" onClick={onRetry}>
           Réessayer
@@ -30,6 +32,16 @@ export function QueryStatus({
       </div>
     );
   }
-  if (loading) return <p aria-busy="true">Chargement…</p>;
+  if (loading)
+    return (
+      <div
+        role="status"
+        aria-busy="true"
+        className="flex items-center gap-3 rounded-xl bg-muted p-5 text-sm text-muted-foreground"
+      >
+        <LoaderCircle className="size-5 animate-spin" aria-hidden />
+        Chargement…
+      </div>
+    );
   return children;
 }

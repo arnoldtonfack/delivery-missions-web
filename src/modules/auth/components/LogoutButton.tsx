@@ -1,5 +1,6 @@
 "use client";
 
+import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -13,13 +14,16 @@ export function LogoutButton(): ReactNode {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
+      aria-label="Déconnexion"
+      className="min-w-12"
       onClick={() => {
         logout();
         router.replace("/login");
       }}
     >
-      Déconnexion
+      <LogOut className="size-5" aria-hidden />
+      <span className="hidden md:inline">Déconnexion</span>
     </Button>
   );
 }

@@ -169,7 +169,7 @@ export function DriversView(): ReactNode {
           />
         ) : (
           <>
-            <div className="hidden rounded-xl border bg-card md:block">
+            <div className="hidden overflow-hidden rounded-2xl border bg-card md:block">
               <table className="w-full table-fixed text-left text-sm">
                 <thead className="border-b bg-muted text-muted-foreground">
                   <tr>

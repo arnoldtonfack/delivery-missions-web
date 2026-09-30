@@ -16,10 +16,16 @@ export function EmptyState({
   action,
 }: EmptyStateProps): ReactNode {
   return (
-    <div className="flex flex-col items-center gap-2 py-12 text-center">
-      <Icon className="size-6" aria-hidden />
-      <p className="font-medium">{title}</p>
-      {description && <p className="text-sm">{description}</p>}
+    <div className="panel flex flex-col items-center gap-3 px-6 py-16 text-center">
+      <span className="mb-2 flex size-16 items-center justify-center rounded-2xl bg-muted text-primary">
+        <Icon className="size-7" aria-hidden />
+      </span>
+      <p className="text-lg font-semibold">{title}</p>
+      {description && (
+        <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+          {description}
+        </p>
+      )}
       {action}
     </div>
   );

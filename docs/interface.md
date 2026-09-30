@@ -17,3 +17,9 @@ Chrome à 360 px : listes dispatcher/chauffeur, formulaire de création et déta
 Les tests de lecture ont utilisé les données API existantes ; aucune mission de démonstration n’a été démarrée ou modifiée pendant ces contrôles. Les mutations sont branchées aux services existants mais n’ont pas été validées de bout en bout sur des écritures réelles.
 
 Validation du branchement : lint, typecheck et build réussis. Chrome avec réponses API simulées (aucune mutation des données de démonstration) : livraison sans commentaire, échec avec raison obligatoire et normalisée, double clic limité à un POST, relecture du détail/historique et liste à jour au retour. Contrôle des services : notification des abonnés après les cinq mutations, invalidation sur 409, absence d’invalidation de succès sur 400. Les écritures de ces tests n’ont pas été exécutées contre la vraie API.
+
+## Finition visuelle
+
+Navigation latérale sur ordinateur et onglets sur mobile, page active signalée par aria-current, identité visuelle avec pictogramme colis, hiérarchie typographique et surfaces unifiées. Connexion en deux volets sur grand écran, formulaire seul sur mobile. Les synthèses dispatcher portent explicitement sur la sélection filtrée ; la progression chauffeur compte les missions terminées (livrées ou échouées), à partir des mêmes données que la liste. Aucun indicateur fictif.
+
+Chrome : connexion, missions, chauffeurs et formulaire vérifiés sans débordement à 360 px ; console contrôlée également à 768 et 1440 px. Captures desktop/mobile inspectées, détail chauffeur vérifié en sombre. Les actions restent accessibles au clavier et les animations respectent prefers-reduced-motion. Lint, typecheck et build réussis.

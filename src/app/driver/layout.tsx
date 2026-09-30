@@ -10,7 +10,9 @@ export default function DriverLayout({
   return (
     <RoleGuard role="DRIVER">
       <AppHeader />
-      <main className="mx-auto w-full max-w-md flex-1 p-4">{children}</main>
+      <main className="mx-auto w-full max-w-lg flex-1 px-4 py-6 sm:p-6">
+        {children}
+      </main>
     </RoleGuard>
   );
 }
