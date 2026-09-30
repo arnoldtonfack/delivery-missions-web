@@ -29,3 +29,10 @@ Première vérification : lint, typecheck et build réussis. API /health opérat
 La connexion réelle révèle le blocage ci-dessus. Pour inspecter les écrans, une session Chrome isolée a reçu hydrated:true dans son stockage de test uniquement. Ce contournement n’est pas livré et ne prouve pas une connexion fonctionnelle. Listes dispatcher, formulaire de création et chauffeurs affichés avec les données API ; aucun débordement de page constaté à 360 px.
 
 Contrôles complémentaires : tournée chauffeur et détails PLANNED, STARTED et DELIVERED lus avec la session de test, sans débordement à 360 px. Aucun fichier de logique interdit n’apparaît dans le diff. Les écritures métier n’ont pas été exercées sur les données existantes.
+
+
+## Correctif autorisé après relecture
+
+Le blocage d’hydratation et le cas JSON corrompu sont désormais corrigés dans le store : `finishHydration` utilise le setter interne, et le callback conserve l’état initial pour récupérer une erreur de lecture. Une session sans jeton est également purgée. Les constats ci-dessus décrivent le code avant correction ; les autres anomalies restent ouvertes.
+
+Validation du correctif : lint, typecheck et build réussis. Chrome, sans simulation : connexion réelle dispatcher et chauffeur, rechargement avec session persistée, déconnexion, puis stockage JSON corrompu avec cookie résiduel → retour à la connexion. Tous ces parcours passent.

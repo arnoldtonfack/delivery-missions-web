@@ -95,5 +95,5 @@ Les anomalies de logique relevées ont été documentées sans correction automa
 
 - [Rapport de relecture](docs/relecture-frontend.md) : scénarios, gravités et corrections proposées.
 - [Choix de design et branchements](docs/interface.md).
-- **Blocage connu** : le store d’authentification ne termine pas son hydratation ; la connexion peut aboutir à un écran vide. Le rapport décrit le correctif à appliquer dans `src/modules/auth/store.ts`.
+- Le blocage d’hydratation après connexion a été corrigé dans `src/modules/auth/store.ts` : initialisation via une action interne et récupération après un stockage JSON corrompu.
 - Les confirmations « Livrée » et « Échec » sont préparées mais désactivées en attendant l’ajout des méthodes correspondantes dans le service frontend.

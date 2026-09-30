@@ -14,6 +14,7 @@ interface AuthState {
 
   setSession: (login: LoginResponse) => void;
   logout: () => void;
+  finishHydration: () => void;
 }
 
 const EMPTY_SESSION = { user: null, accessToken: null, expiresAt: null };
@@ -23,6 +24,8 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       ...EMPTY_SESSION,
       hydrated: false,
+
+      finishHydration: () => set({ hydrated: true }),
 
       setSession: ({ user, accessToken, expiresIn }) => {
         syncSessionCookie(user.role, expiresIn);
@@ -46,15 +49,24 @@ export const useAuthStore = create<AuthState>()(
        * expirée est purgée et le cookie du proxy est réaligné. Sans cela, un
        * cookie sans store (ou l'inverse) ferait boucler les redirections.
        */
-      onRehydrateStorage: () => (state) => {
-        if (!state) return;
-        const remainingMs = (state.expiresAt ?? 0) - Date.now();
-        if (state.user && remainingMs > 0) {
-          syncSessionCookie(state.user.role, Math.floor(remainingMs / 1000));
-        } else {
-          state.logout();
+      onRehydrateStorage: (initialState) => (state, error) => {
+        if (!state) {
+          // Après un échec de lecture synchrone, persist retourne encore son
+          // état initial : attendre la fin de création avant de le remplacer.
+          queueMicrotask(() => {
+            initialState.logout();
+            initialState.finishHydration();
+          });
+          return;
         }
-        useAuthStore.setState({ hydrated: true });
+        const session = state;
+        const remainingMs = (session.expiresAt ?? 0) - Date.now();
+        if (!error && session.user && session.accessToken && remainingMs > 0) {
+          syncSessionCookie(session.user.role, Math.floor(remainingMs / 1000));
+        } else {
+          session.logout();
+        }
+        session.finishHydration();
       },
     },
   ),

@@ -6,7 +6,7 @@ Toutes les couleurs sont dans les tokens de globals.css en clair/sombre. Statuts
 
 Branchés : filtres date/statut/chauffeur (inactifs inclus pour l’historique), création et modification PLANNED, détail/historique, liste/création/activation des chauffeurs, tournée et démarrage chauffeur. Chargement, vide, erreur/réessayer, envoi désactivé et toasts sont intégrés.
 
-À brancher : confirmations Livrée et Échec, après ajout des méthodes et payloads au service existant. Raison non vide après trim, commentaire facultatif, 500 caractères maximum. À corriger par l’auteur : le blocage d’hydratation et les autres anomalies du rapport relecture-frontend.md.
+À brancher : confirmations Livrée et Échec, après ajout des méthodes et payloads au service existant. Raison non vide après trim, commentaire facultatif, 500 caractères maximum. Le blocage d’hydratation a été corrigé après autorisation. Les autres anomalies ouvertes figurent dans relecture-frontend.md.
 
 ## Contrôles visuels
 
