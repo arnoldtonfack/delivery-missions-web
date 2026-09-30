@@ -128,3 +128,100 @@
     @apply font-sans;
   }
 }
+/* Couleurs métier centralisées, modes clair et sombre. */
+:root {
+  --background: #f3f6f8;
+  --foreground: #162b36;
+  --card: #ffffff;
+  --card-foreground: #162b36;
+  --primary: #07566b;
+  --primary-foreground: #ffffff;
+  --secondary: #e2edf0;
+  --secondary-foreground: #163f4c;
+  --muted: #eaf0f3;
+  --muted-foreground: #4d626e;
+  --accent: #dcebef;
+  --accent-foreground: #143f4b;
+  --border: #c7d4dc;
+  --input: #788e9a;
+  --ring: #07566b;
+  --destructive: #a52636;
+  --planned-bg: #e9edf8;
+  --planned-fg: #364477;
+  --started-bg: #fff0d3;
+  --started-fg: #784600;
+  --delivered-bg: #dcf3e9;
+  --delivered-fg: #165e43;
+  --failed-bg: #fce7ec;
+  --failed-fg: #92213b;
+}
+.dark {
+  --background: #101c24;
+  --foreground: #edf4f7;
+  --card: #192b35;
+  --card-foreground: #edf4f7;
+  --popover: #192b35;
+  --popover-foreground: #edf4f7;
+  --primary: #82d5e8;
+  --primary-foreground: #102d38;
+  --secondary: #283e49;
+  --secondary-foreground: #edf4f7;
+  --muted: #243843;
+  --muted-foreground: #b4c8d2;
+  --accent: #304b58;
+  --accent-foreground: #edf4f7;
+  --border: #49616f;
+  --input: #7895a5;
+  --ring: #82d5e8;
+  --destructive: #ffabb9;
+  --planned-bg: #293451;
+  --planned-fg: #c3d1ff;
+  --started-bg: #45371e;
+  --started-fg: #ffda91;
+  --delivered-bg: #1b4036;
+  --delivered-fg: #9ce8c5;
+  --failed-bg: #4b2734;
+  --failed-fg: #ffc0cf;
+}
+[data-status="PLANNED"] {
+  background: var(--planned-bg);
+  color: var(--planned-fg);
+}
+[data-status="STARTED"] {
+  background: var(--started-bg);
+  color: var(--started-fg);
+}
+[data-status="DELIVERED"] {
+  background: var(--delivered-bg);
+  color: var(--delivered-fg);
+}
+[data-status="FAILED"] {
+  background: var(--failed-bg);
+  color: var(--failed-fg);
+}
+[data-slot="button"],
+[data-slot="input"],
+select {
+  min-height: 3rem;
+}
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--input);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--foreground);
+  padding: 0.75rem;
+  font: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--card);
+  padding: 1.25rem;
+}

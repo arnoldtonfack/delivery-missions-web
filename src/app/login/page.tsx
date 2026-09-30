@@ -7,7 +7,12 @@ export default function LoginPage(): ReactNode {
   return (
     <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 p-4">
       <h1 className="text-2xl font-semibold">{AppEnv.appName}</h1>
-      <LoginForm />
+      <p className="text-muted-foreground">
+        Connectez-vous pour organiser les livraisons ou retrouver votre tournée.
+      </p>
+      <div className="panel">
+        <LoginForm />
+      </div>
     </main>
   );
 }

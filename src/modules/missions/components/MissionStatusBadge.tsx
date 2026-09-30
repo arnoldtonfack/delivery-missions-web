@@ -1,3 +1,4 @@
+import { CalendarClock, Truck, CircleCheck, CircleX } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,8 +21,15 @@ export function MissionStatusBadge({
 }: {
   readonly status: MissionStatus;
 }): ReactNode {
+  const Icon = {
+    PLANNED: CalendarClock,
+    STARTED: Truck,
+    DELIVERED: CircleCheck,
+    FAILED: CircleX,
+  }[status];
   return (
     <Badge variant={VARIANT[status]} data-status={status}>
+      <Icon aria-hidden className="size-3.5" />
       {MISSION_STATUS_LABEL[status]}
     </Badge>
   );

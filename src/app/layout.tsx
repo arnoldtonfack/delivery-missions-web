@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   description: "Gestion des missions de livraison — dispatchers et chauffeurs",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: LayoutProps<"/">): ReactNode {
   return (
     <html
       lang="fr"

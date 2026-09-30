@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent, type ReactNode } from "react";
 
@@ -27,9 +28,11 @@ export function LoginForm(): ReactNode {
     try {
       const session = await AuthService.login({ email, password });
       setSession(session);
+      toast.success("Connexion réussie.");
       router.replace(homePathFor(session.user.role));
     } catch (err: unknown) {
       setError(loginErrorMessage(err));
+      toast.error(loginErrorMessage(err));
       setSubmitting(false);
     }
   }
