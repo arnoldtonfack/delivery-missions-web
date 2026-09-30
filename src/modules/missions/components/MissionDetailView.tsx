@@ -9,12 +9,13 @@ import { QueryStatus } from "@/components/QueryStatus";
 import { EmptyState } from "@/components/EmptyState";
 import { FormField } from "@/components/FormField";
 import { Button } from "@/components/ui/button";
-import { formatDay, formatDateTime } from "@/lib/format";
+import { formatDay } from "@/lib/format";
 import { useMission } from "../hooks";
 import { MissionsService } from "../module";
 import { missionErrorMessage } from "../errors";
-import { DRIVER_ACTIONS, MISSION_STATUS_LABEL } from "../status";
+import { DRIVER_ACTIONS } from "../status";
 import { MissionStatusBadge } from "./MissionStatusBadge";
+import { MissionTimeline, MissionHistory } from "./MissionTimeline";
 import { MissionForm } from "./MissionForm";
 
 export function MissionDetailView({
@@ -114,6 +115,7 @@ export function MissionDetailView({
               description={`${mission.reference} · ${formatDay(mission.plannedDate)}`}
               actions={<MissionStatusBadge status={mission.status} />}
             />
+            <MissionTimeline mission={mission} />
             <section
               aria-label="Trajet"
               className="panel space-y-6 break-words border-t-4 border-t-primary"
@@ -170,35 +172,7 @@ export function MissionDetailView({
                 )}
               </section>
             )}
-            <section className="panel space-y-4">
-              <h2 className="font-semibold">Historique</h2>
-              {!mission.statusHistory.length ? (
-                <p className="text-sm text-muted-foreground">
-                  Aucun événement enregistré.
-                </p>
-              ) : (
-                <ol className="space-y-6 border-l-2 border-primary/20 pl-5">
-                  {mission.statusHistory.map((entry) => (
-                    <li
-                      key={entry.id}
-                      className="relative space-y-1 break-words before:absolute before:top-1.5 before:-left-[27px] before:size-3 before:rounded-full before:border-2 before:border-card before:bg-primary"
-                    >
-                      <p className="font-medium">
-                        {entry.fromStatus
-                          ? `${MISSION_STATUS_LABEL[entry.fromStatus]} → `
-                          : "Création · "}
-                        {MISSION_STATUS_LABEL[entry.toStatus]}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDateTime(entry.createdAt)} ·{" "}
-                        {entry.actor.fullName}
-                      </p>
-                      {entry.note && <p className="text-sm">{entry.note}</p>}
-                    </li>
-                  ))}
-                </ol>
-              )}
-            </section>
+            <MissionHistory mission={mission} />
             {driver && DRIVER_ACTIONS[mission.status].includes("start") && (
               <div className="sticky bottom-0 rounded-xl border bg-card p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
                 <Button

@@ -23,3 +23,9 @@ Validation du branchement : lint, typecheck et build réussis. Chrome avec répo
 Navigation latérale sur ordinateur et onglets sur mobile, page active signalée par aria-current, identité visuelle avec pictogramme colis, hiérarchie typographique et surfaces unifiées. Connexion en deux volets sur grand écran, formulaire seul sur mobile. Les synthèses dispatcher portent explicitement sur la sélection filtrée ; la progression chauffeur compte les missions terminées (livrées ou échouées), à partir des mêmes données que la liste. Aucun indicateur fictif.
 
 Chrome : connexion, missions, chauffeurs et formulaire vérifiés sans débordement à 360 px ; console contrôlée également à 768 et 1440 px. Captures desktop/mobile inspectées, détail chauffeur vérifié en sombre. Les actions restent accessibles au clavier et les animations respectent prefers-reduced-motion. Lint, typecheck et build réussis.
+
+## Timeline de mission
+
+Le détail dispatcher/chauffeur présente désormais une progression en trois étapes, horizontale sur desktop et verticale sur mobile. Le résultat futur reste neutre (« Livraison ou échec ») ; une mission échouée ne montre jamais une livraison réussie. L’étape actuelle utilise aria-current, des icônes et un libellé explicite. Les dates proviennent de createdAt, startedAt et completedAt, sans date inventée. L’historique reprend les événements API dans leur ordre, avec auteur, date et note.
+
+Validation : les quatre statuts vérifiés sur les deux rôles dans Chrome à 1440/360 px, sans débordement ; captures desktop/mobile inspectées. Lint, typecheck et build réussis. Aucun changement des transitions ni de l’invalidation.
