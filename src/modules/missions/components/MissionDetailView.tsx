@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type FormEvent, type ReactNode } from "react";
 import { MapPin, PackageCheck, Play, Warehouse } from "lucide-react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/PageHeader";
@@ -25,6 +25,7 @@ export function MissionDetailView({
   readonly driver?: boolean;
 }): ReactNode {
   const query = useMission(id);
+  const submitting = useRef(false);
   const [pending, setPending] = useState(false);
   const [editing, setEditing] = useState(false);
   const [outcome, setOutcome] = useState<"deliver" | "fail">("deliver");
@@ -32,19 +33,57 @@ export function MissionDetailView({
   const [actionError, setActionError] = useState<string | null>(null);
   const mission = query.data;
   async function start(): Promise<void> {
-    if (pending) return;
+    if (submitting.current) return;
+    submitting.current = true;
     setPending(true);
     setActionError(null);
     try {
       await MissionsService.start(id);
       toast.success("Mission démarrée. Bonne route !");
-      query.reload();
     } catch (err: unknown) {
       const message = missionErrorMessage(err);
       setActionError(message);
       toast.error(message);
       query.reload();
     } finally {
+      submitting.current = false;
+      setPending(false);
+    }
+  }
+  async function complete(event: FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault();
+    if (submitting.current) return;
+    const trimmedNote = note.trim();
+    if ((outcome === "fail" && !trimmedNote) || trimmedNote.length > 500) {
+      const message = !trimmedNote
+        ? "Indiquez une raison d’échec."
+        : "Le texte ne doit pas dépasser 500 caractères.";
+      setActionError(message);
+      toast.error(message);
+      return;
+    }
+    submitting.current = true;
+    setPending(true);
+    setActionError(null);
+    try {
+      if (outcome === "deliver") {
+        await MissionsService.deliver(
+          id,
+          trimmedNote ? { comment: trimmedNote } : {},
+        );
+        toast.success("Livraison confirmée.");
+      } else {
+        await MissionsService.fail(id, { reason: trimmedNote });
+        toast.success("Échec enregistré.");
+      }
+      setNote("");
+    } catch (err: unknown) {
+      const message = missionErrorMessage(err);
+      setActionError(message);
+      toast.error(message);
+      query.reload();
+    } finally {
+      submitting.current = false;
       setPending(false);
     }
   }
@@ -170,14 +209,16 @@ export function MissionDetailView({
               </div>
             )}
             {driver && DRIVER_ACTIONS[mission.status].includes("deliver") && (
-              <section className="panel space-y-4">
+              <form onSubmit={complete} className="panel space-y-4">
                 <h2 className="font-semibold">Terminer la mission</h2>
                 <FormField label="Résultat">
                   <select
+                    disabled={pending}
                     value={outcome}
                     onChange={(e) => {
                       setOutcome(e.target.value as "deliver" | "fail");
                       setNote("");
+                      setActionError(null);
                     }}
                   >
                     <option value="deliver">Livrée</option>
@@ -192,6 +233,7 @@ export function MissionDetailView({
                   }
                 >
                   <textarea
+                    disabled={pending}
                     rows={3}
                     maxLength={500}
                     required={outcome === "fail"}
@@ -199,25 +241,19 @@ export function MissionDetailView({
                     onChange={(e) => setNote(e.target.value)}
                   />
                 </FormField>
-                <p
-                  id="outcome-unavailable"
-                  className="text-sm text-muted-foreground"
-                >
-                  La confirmation de livraison et le signalement d’échec ne sont
-                  pas encore disponibles.
-                </p>
-                {/* TODO : ajouter deliver/fail à MissionsService et leurs payloads avant de brancher ces confirmations. Une raison non vide après trim est obligatoire en cas d’échec. */}
                 <Button
                   className="min-h-14 w-full"
-                  disabled
-                  aria-describedby="outcome-unavailable"
+                  type="submit"
+                  disabled={pending || (outcome === "fail" && !note.trim())}
                 >
                   <PackageCheck aria-hidden />
-                  {outcome === "deliver"
-                    ? "Confirmer la livraison"
-                    : "Signaler l’échec"}
+                  {pending
+                    ? "Enregistrement…"
+                    : outcome === "deliver"
+                      ? "Confirmer la livraison"
+                      : "Signaler l’échec"}
                 </Button>
-              </section>
+              </form>
             )}
           </>
         )}

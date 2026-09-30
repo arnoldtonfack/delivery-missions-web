@@ -60,3 +60,12 @@ export interface MissionsQuery {
   readonly driverId?: string;
   readonly status?: MissionStatus;
 }
+
+/** Miroirs de DeliverMissionDto et FailMissionDto. */
+export interface DeliverMissionPayload {
+  readonly comment?: string;
+}
+
+export interface FailMissionPayload {
+  readonly reason: string;
+}

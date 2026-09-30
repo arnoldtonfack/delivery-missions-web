@@ -36,3 +36,8 @@ Contrôles complémentaires : tournée chauffeur et détails PLANNED, STARTED et
 Le blocage d’hydratation et le cas JSON corrompu sont désormais corrigés dans le store : `finishHydration` utilise le setter interne, et le callback conserve l’état initial pour récupérer une erreur de lecture. Une session sans jeton est également purgée. Les constats ci-dessus décrivent le code avant correction ; les autres anomalies restent ouvertes.
 
 Validation du correctif : lint, typecheck et build réussis. Chrome, sans simulation : connexion réelle dispatcher et chauffeur, rechargement avec session persistée, déconnexion, puis stockage JSON corrompu avec cookie résiduel → retour à la connexion. Tous ces parcours passent.
+
+
+## Branchement des transitions autorisé ensuite
+
+Les méthodes et payloads deliver/fail ont été ajoutés et les confirmations activées. Un compteur de révision Zustand invalide toutes les lectures de missions après succès ou conflit 409, sans nouvelle bibliothèque de cache. Le constat précédent de boutons désactivés est désormais résolu.
