@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { useState, type MouseEvent, type ReactNode } from "react";
 import { ArrowRight, MapPin, Plus, RefreshCw } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { QueryStatus } from "@/components/QueryStatus";
@@ -28,6 +29,12 @@ export function DispatchMissionList(): ReactNode {
   const [status, setStatus] = useState<MissionStatus | "">("");
   const [driverId, setDriverId] = useState("");
   const drivers = useDrivers();
+  const router = useRouter();
+  // Toute la ligne ouvre le détail ; le lien de la référence reste l'accès clavier.
+  const openMission = (event: MouseEvent<HTMLTableRowElement>, id: string): void => {
+    if (event.target instanceof Element && event.target.closest("a")) return;
+    router.push(`/dispatch/missions/${id}`);
+  };
   const query = useMissions({
     date,
     status: status || undefined,
@@ -139,7 +146,8 @@ export function DispatchMissionList(): ReactNode {
                   {query.data.map((m) => (
                     <tr
                       key={m.id}
-                      className="border-b last:border-0 hover:bg-muted/50"
+                      className="cursor-pointer border-b last:border-0 hover:bg-muted/50"
+                      onClick={(event) => openMission(event, m.id)}
                     >
                       <td className="break-words p-4">
                         <Link
