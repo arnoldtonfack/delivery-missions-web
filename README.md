@@ -44,15 +44,23 @@ src/
 ├── config/env.ts             # URL de l'API, préfixe /api/v1.0.0
 ├── lib/
 │   ├── http.ts               # client fetch : enveloppe { success, data }, ApiError + code métier
+│   ├── errors.ts             # apiErrorMessage() : code métier → message (base des errors.ts)
+│   ├── format.ts             # dates fr-FR dans le fuseau métier Africa/Douala
 │   └── query.ts              # construction de query string
+├── hooks/
+│   ├── useApiQuery.ts        # lecture API : data / loading / error / reload, requêtes annulées
+│   └── useDebouncedValue.ts
 ├── components/
 │   ├── ui/                   # shadcn/ui (généré : `pnpm dlx shadcn@latest add <composant>`)
-│   └── AppHeader.tsx
+│   ├── AppHeader.tsx  PageHeader.tsx  EmptyState.tsx
+│   └── QueryStatus.tsx       # chargement / erreur + « Réessayer » / contenu
 ├── modules/<domaine>/        # un dossier par domaine, miroir des modules de l'API
 │   ├── types.ts              # miroir des DTO de l'API
 │   ├── module.ts             # appels API (XxxService)
+│   ├── hooks.ts              # lectures (useMissions, useMission, useDrivers)
 │   ├── errors.ts             # code métier → message affiché
-│   └── components/
+│   └── components/           # ex. MissionStatusBadge
+│   (missions/status.ts : libellés des statuts et actions chauffeur par statut)
 └── app/                      # routes (App Router) : pages fines, la logique vit dans modules/
     ├── login/
     ├── dispatch/             # layout + RoleGuard DISPATCHER

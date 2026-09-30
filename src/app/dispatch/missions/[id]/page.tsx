@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-// À construire : détail, modification et historique des statuts — MissionsService.get/update
+// À construire : détail + historique (useMission), modification si PLANNED (MissionsService.update)
 export default async function MissionDetailPage({
   params,
 }: PageProps<"/dispatch/missions/[id]">): Promise<ReactNode> {
