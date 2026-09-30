@@ -8,7 +8,8 @@ import { MissionsService } from "./module";
 import type { Mission, MissionDetail, MissionsQuery } from "./types";
 
 /**
- * Missions d'un jour (aujourd'hui par défaut, côté API), filtrables.
+ * Missions filtrables, plus récentes d'abord. Sans date, l'API renvoie toutes les
+ * dates au dispatcher et la journée au chauffeur.
  * Pour un chauffeur, l'API ne renvoie que les siennes.
  */
 export function useMissions(

@@ -25,7 +25,8 @@ import { MissionOverview } from "./MissionOverview";
 import { MissionStatusBadge } from "./MissionStatusBadge";
 
 export function DispatchMissionList(): ReactNode {
-  const [date, setDate] = useState(businessToday);
+  // Vide = toutes les dates (plus récentes d'abord) ; le filtre restreint à un jour.
+  const [date, setDate] = useState("");
   const [status, setStatus] = useState<MissionStatus | "">("");
   const [driverId, setDriverId] = useState("");
   const drivers = useDrivers();
@@ -36,7 +37,7 @@ export function DispatchMissionList(): ReactNode {
     router.push(`/dispatch/missions/${id}`);
   };
   const query = useMissions({
-    date,
+    date: date || undefined,
     status: status || undefined,
     driverId: driverId || undefined,
   });
@@ -64,9 +65,8 @@ export function DispatchMissionList(): ReactNode {
         <FormField label="Date de livraison">
           <Input
             type="date"
-            required
             value={date}
-            onChange={(e) => setDate(e.target.value || businessToday())}
+            onChange={(e) => setDate(e.target.value)}
           />
         </FormField>
         <FormField label="Statut">
@@ -104,15 +104,28 @@ export function DispatchMissionList(): ReactNode {
         </QueryStatus>
       </section>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="font-semibold">{formatDay(date)}</h2>
-        <Button
-          variant="outline"
-          onClick={query.reload}
-          disabled={query.loading}
-        >
-          <RefreshCw aria-hidden />
-          Actualiser
-        </Button>
+        <h2 className="font-semibold">
+          {date ? formatDay(date) : "Toutes les dates"}
+        </h2>
+        <div className="flex flex-wrap gap-2">
+          {date ? (
+            <Button variant="outline" onClick={() => setDate("")}>
+              Toutes les dates
+            </Button>
+          ) : (
+            <Button variant="outline" onClick={() => setDate(businessToday())}>
+              Aujourd’hui
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            onClick={query.reload}
+            disabled={query.loading}
+          >
+            <RefreshCw aria-hidden />
+            Actualiser
+          </Button>
+        </div>
       </div>
       <QueryStatus
         loading={query.loading}
@@ -132,6 +145,7 @@ export function DispatchMissionList(): ReactNode {
                   <tr>
                     {[
                       "Mission / client",
+                      "Date",
                       "Destination",
                       "Chauffeur",
                       "Statut",
@@ -158,6 +172,7 @@ export function DispatchMissionList(): ReactNode {
                         </Link>
                         <p className="font-medium">{m.customerName}</p>
                       </td>
+                      <td className="p-4">{formatDay(m.plannedDate)}</td>
                       <td className="break-words p-4">{m.deliveryAddress}</td>
                       <td className="break-words p-4">{m.driver.fullName}</td>
                       <td className="p-4">
@@ -181,7 +196,7 @@ export function DispatchMissionList(): ReactNode {
                   </div>
                   <p className="font-medium">{m.customerName}</p>
                   <p className="text-sm text-muted-foreground">
-                    {m.deliveryAddress}
+                    {formatDay(m.plannedDate)} · {m.deliveryAddress}
                   </p>
                   <p className="text-sm">{m.driver.fullName} →</p>
                 </Link>
