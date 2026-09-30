@@ -86,4 +86,14 @@ src/
 
 ## Usage de l'IA
 
-<!-- À compléter : outils utilisés et pour quelles parties (exigence du règlement). -->
+Codex a été utilisé pour la relecture du frontend, la construction des interfaces
+dispatcher/chauffeur, le thème et les vérifications de compilation et de rendu.
+Les anomalies de logique relevées ont été documentées sans correction automatique.
+
+
+## Interface et points à finaliser
+
+- [Rapport de relecture](docs/relecture-frontend.md) : scénarios, gravités et corrections proposées.
+- [Choix de design et branchements](docs/interface.md).
+- **Blocage connu** : le store d’authentification ne termine pas son hydratation ; la connexion peut aboutir à un écran vide. Le rapport décrit le correctif à appliquer dans `src/modules/auth/store.ts`.
+- Les confirmations « Livrée » et « Échec » sont préparées mais désactivées en attendant l’ajout des méthodes correspondantes dans le service frontend.

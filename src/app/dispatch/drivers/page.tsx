@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-
-// À construire : liste (useDrivers), création, activation/désactivation — DriversService, driverErrorMessage
+import { DriversView } from "@/modules/drivers/components/DriversView";
 export default function DriversPage(): ReactNode {
-  return <h1>Chauffeurs</h1>;
+  return <DriversView />;
 }

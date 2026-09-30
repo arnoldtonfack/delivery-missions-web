@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
+import { DispatchMissionList } from "@/modules/missions/components/MissionList";
 
-// À construire : liste filtrable (date, statut, chauffeur) — useMissions(), useDrivers({ isActive: true }) pour le filtre, MissionStatusBadge, QueryStatus, EmptyState
-export default function DispatchMissionsPage(): ReactNode {
-  return <h1>Missions</h1>;
+export default function Page(): ReactNode {
+  return <DispatchMissionList />;
 }

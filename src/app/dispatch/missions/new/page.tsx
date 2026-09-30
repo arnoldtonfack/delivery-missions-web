@@ -1,6 +1,21 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
-
-// À construire : formulaire de création — MissionsService.create, useDrivers({ isActive: true }), missionErrorMessage
+import { PageHeader } from "@/components/PageHeader";
+import { MissionForm } from "@/modules/missions/components/MissionForm";
 export default function NewMissionPage(): ReactNode {
-  return <h1>Nouvelle mission</h1>;
+  return (
+    <div className="mx-auto max-w-3xl space-y-6">
+      <Link
+        className="inline-flex min-h-12 items-center text-primary"
+        href="/dispatch"
+      >
+        ← Missions
+      </Link>
+      <PageHeader
+        title="Nouvelle mission"
+        description="Précisez le trajet et assignez un chauffeur actif."
+      />
+      <MissionForm />
+    </div>
+  );
 }
